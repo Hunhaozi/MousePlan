@@ -1,0 +1,11 @@
+<RCC>
+    <qresource prefix="/img">
+        <file alias="img_up">img/img_41.jpg</file>
+        <file alias="MousePlan">img/MousePlanImg.png</file>
+        <file alias="dehead">img/dehead.png</file>
+    </qresource>
+    <qresource prefix="/config">
+        <file alias="agreement_local.md">config/agreement_local.md</file>
+        <file alias="agreement_online.md">config/agreement_online.md</file>
+    </qresource>
+</RCC>

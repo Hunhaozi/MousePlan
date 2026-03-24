@@ -1,0 +1,44 @@
+{
+  "dialog": {
+    "baseFont": 32,
+    "controlHeight": 72,
+    "buttonHeight": 84,
+    "cornerRadius": 14,
+    "listItemHeight": 110
+  },
+  "planManager": {
+    "listFont": 60,
+    "actionFont": 60,
+    "actionHeight": 150,
+    "topRatio": 1,
+    "contentRatio": 8,
+    "bottomRatio": 1
+  },
+  "login": {
+    "logoMinFont": 52,
+    "captionMinFont": 20,
+    "inputMinFont": 20,
+    "buttonMinFont": 28,
+    "linkMinFont": 22,
+    "cardMinWidthPortrait": 940
+  },
+  "main": {
+    "bodyMinFont": 20,
+    "topRatio": 1,
+    "contentRatio": 15,
+    "bottomRatio": 1,
+    "calendarDayMinFont": 24,
+    "calendarNavMinFont": 22,
+    "navTextMinFont": 22,
+    "navIconMinSize": 48,
+    "mainActionButtonMinFont": 30,
+    "mainActionButtonMinHeight": 88,
+    "planItemTitleMinFont": 28,
+    "planItemMetaMinFont": 20,
+    "planItemButtonMinFont": 20,
+    "planItemMinHeight": 230
+  },
+  "colors": {
+    "dialogBg": "#f5f7f4"
+  }
+}

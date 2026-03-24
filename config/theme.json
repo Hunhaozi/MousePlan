@@ -1,0 +1,10 @@
+{
+  "name": "fitness-default",
+  "colors": {
+    "primary": "#245b46",
+    "accent": "#f0a34a",
+    "soft": "#f4f7f3",
+    "todayBg": "#cfe9d7",
+    "selectedBg": "#9fd8b2"
+  }
+}

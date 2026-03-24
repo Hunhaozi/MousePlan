@@ -1,0 +1,80 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+SCRIPT_NAME="Mouse_Add_code"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+DB_FILE="${SCRIPT_DIR}/data/db.json"
+
+usage() {
+  echo "用法: ./${SCRIPT_NAME} <16位注册码> <备注>"
+  echo "示例: ./${SCRIPT_NAME} ABCD1234EFGH5678 \"测试用户A\""
+}
+
+if [ "$#" -ne 2 ]; then
+  usage
+  exit 1
+fi
+
+RAW_CODE="$1"
+NOTE="$2"
+
+if [ "${#RAW_CODE}" -ne 16 ]; then
+  echo "错误: 注册码必须是16位，当前长度为 ${#RAW_CODE}。" >&2
+  exit 1
+fi
+
+if ! command -v node >/dev/null 2>&1; then
+  echo "错误: 未安装 node，无法写入 db.json。" >&2
+  exit 1
+fi
+
+mkdir -p "${SCRIPT_DIR}/data"
+
+CODE_HASH="$(printf '%s' "$RAW_CODE" | sha256sum | awk '{print $1}')"
+
+node - <<'NODE' "$DB_FILE" "$CODE_HASH" "$NOTE"
+const fs = require("fs");
+
+const dbPath = process.argv[2];
+const codeHash = process.argv[3];
+const note = process.argv[4];
+
+let db = {
+  users: {},
+  plans: {},
+  records: {},
+  registrationCodes: {},
+};
+
+if (fs.existsSync(dbPath)) {
+  const raw = fs.readFileSync(dbPath, "utf8").trim();
+  if (raw) {
+    try {
+      const parsed = JSON.parse(raw);
+      db = {
+        users: parsed.users || {},
+        plans: parsed.plans || {},
+        records: parsed.records || {},
+        registrationCodes: parsed.registrationCodes || {},
+      };
+    } catch {
+      // Keep fallback empty db
+    }
+  }
+}
+
+const existing = db.registrationCodes[codeHash] || {};
+db.registrationCodes[codeHash] = {
+  ...existing,
+  used: false,
+  usedByUserId: "",
+  note,
+  createdAt: existing.createdAt || new Date().toISOString(),
+};
+
+fs.writeFileSync(dbPath, JSON.stringify(db, null, 2));
+console.log(JSON.stringify({ success: true, codeHash }));
+NODE
+
+echo "完成: 注册码已通过本机脚本写入 ${DB_FILE}"
